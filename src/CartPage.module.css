@@ -51,3 +51,7 @@
    font-weight: 700;
    transform: translate(-50%, 0);
 }
+
+.flex{
+display: "flex"
+}

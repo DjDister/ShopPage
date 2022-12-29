@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./Card.module.css";
-import { ShoppingItem } from "../../../types";
+import { CartState, ShoppingItem } from "../../../types";
 import { ReactComponent as CartSVG } from "./cart.svg";
 import { NavLink } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
@@ -16,7 +16,7 @@ type CardState = {
   isHovering: boolean;
 };
 
-class Card extends Component<CardProps, CardState> {
+class Card extends PureComponent<CardProps, CardState> {
   state = {
     isHovering: false,
   };
@@ -94,10 +94,7 @@ class Card extends Component<CardProps, CardState> {
   }
 }
 
-function mapStateToProps(state: {
-  cart: cartItem[];
-  currency: { label: string; symbol: string };
-}) {
+function mapStateToProps(state: CartState) {
   const cart = state.cart;
   const currency = state.currency;
   return {

@@ -16,7 +16,6 @@ const getCategories = async (): Promise<string[]> => {
       (result: {
         data: { categories: { name: string }[] };
         loading: boolean;
-        networkStatus: any;
       }) => {
         return [...result.data.categories.map((category) => category.name)];
       }

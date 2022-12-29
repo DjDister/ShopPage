@@ -46,7 +46,6 @@ const getProductsForCategory = async (
       (result: {
         data: { category: { products: ShoppingItem[] } };
         loading: boolean;
-        networkStatus: any;
       }) => {
         return result.data.category.products;
       }

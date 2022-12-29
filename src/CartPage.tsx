@@ -1,24 +1,22 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import "./ProductPage.css";
 import { connect, ConnectedProps } from "react-redux";
-import {
-  decreaseAmountProduct,
-  increaseAmountProduct,
-  removeProduct,
-} from "./store/actionCreators";
-import { cartItem } from "../types";
+import { removeProduct } from "./store/actionCreators";
+import { CartState } from "../types";
 import CartItem from "./components/CartItem/CartItem";
 import totalCartPrice from "././utils/totalCartPrice";
 import cartItemsAmount from "././utils/cartItemsAmount";
 import styles from "./CartPage.module.css";
+import { RouteComponentProps } from "react-router-dom";
 interface CartPageProps
-  // eslint-disable-next-line no-use-before-define
-  extends PropsFromRedux {}
+  extends RouteComponentProps<{}>,
+    // eslint-disable-next-line no-use-before-define
+    PropsFromRedux {}
 
 type CartPageState = {};
 
-class CartPage extends Component<CartPageProps, CartPageState> {
+class CartPage extends PureComponent<CartPageProps, CartPageState> {
   state = {};
 
   render() {
@@ -27,7 +25,7 @@ class CartPage extends Component<CartPageProps, CartPageState> {
       <div className="container">
         <Navbar />
         <div className="flexCenter">
-          <div className="pageContainer">
+          <div className="pageContainerCart">
             <div className="categoryName">CART</div>
             {this.props.cart.length === 0 ? (
               <div className={styles.emptyCart}>YOUR CART IS EMPTY</div>
@@ -43,20 +41,20 @@ class CartPage extends Component<CartPageProps, CartPageState> {
                   );
                 })}
                 <div className={styles.cartDetails}>
-                  <div style={{ display: "flex" }}>
+                  <div className={styles.flex}>
                     <div className={styles.textContainer}>Tax 21%:</div>
                     <div className={styles.text}>
                       {this.props.currency.symbol +
                         Math.round(cartPrice * 0.21 * 100) / 100}
                     </div>
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div className={styles.flex}>
                     <div className={styles.textContainer}>Quantity:</div>
                     <div className={styles.text}>
                       {cartItemsAmount(this.props.cart)}
                     </div>
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div className={styles.flex}>
                     <div className={styles.textContainer}>Total:</div>{" "}
                     <div className={styles.text}>
                       {this.props.currency.symbol + cartPrice}
@@ -74,18 +72,13 @@ class CartPage extends Component<CartPageProps, CartPageState> {
   }
 }
 
-function mapStateToProps(state: {
-  cart: cartItem[];
-  currency: { label: string; symbol: string };
-}) {
+function mapStateToProps(state: CartState) {
   return {
     cart: state.cart,
     currency: state.currency,
   };
 }
 const connector = connect(mapStateToProps, {
-  increaseAmountProduct,
-  decreaseAmountProduct,
   removeProduct,
 });
 

@@ -43,7 +43,6 @@ const getProducts = async (): Promise<ShoppingItem[]> => {
       (result: {
         data: { categories: { products: ShoppingItem[] }[] };
         loading: boolean;
-        networkStatus: any;
       }) => {
         return result.data.categories[0].products;
       }

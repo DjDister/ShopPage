@@ -100,6 +100,7 @@
     position: relative;
     width: 121px;
     height: 190px;
+    margin-left: 8px;
 }
 
 .cartItemImage{
@@ -110,7 +111,7 @@
 }
 
 .attributeName{
-height: 16px;
+min-height: 16px;
 margin-top: 4px;
 font-family: 'Raleway';
 font-style: normal;
@@ -170,7 +171,7 @@ flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-
+    
 }
 
 .countButton{

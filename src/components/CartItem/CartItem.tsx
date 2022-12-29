@@ -1,17 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./CartItem.module.css";
 import { connect, ConnectedProps } from "react-redux";
-import { cartItem } from "../../../types";
-
-import {
-  decreaseAmountProduct,
-  increaseAmountProduct,
-  removeProduct,
-} from "../../store/actionCreators";
-
+import { cartItem, currency } from "../../../types";
 import { ReactComponent as RightArrow } from "./rightArrow.svg";
 import { ReactComponent as LeftArrow } from "./leftArrow.svg";
-// eslint-disable-next-line no-use-before-define
+import AttributeItem from "./AttributeItem";
+import CounterButton from "./CounterButton";
 interface Props extends PropsFromRedux {
   cartItem: cartItem;
   lastChild?: boolean;
@@ -22,7 +16,7 @@ type State = {
   showedPicture: number;
 };
 
-class CartItem extends Component<Props, State> {
+class CartItem extends PureComponent<Props, State> {
   state = {
     showedPicture: 0,
   };
@@ -79,90 +73,17 @@ class CartItem extends Component<Props, State> {
                 : ""}
             </div>
             {cartItem.attributes.map((attribute, index) => (
-              <div key={index} className="attributeContainer">
-                <div className={styles.attributeName}>{attribute.id}:</div>
-                <div className={styles.buttonsContainer}>
-                  {attribute.items.map((item, index) => {
-                    return attribute.type === "swatch" ? (
-                      <div
-                        key={index}
-                        className={styles.swatchButtonBorder}
-                        style={
-                          attribute.chosenAttribute === item.id
-                            ? { border: "2px solid #5ECE7B" }
-                            : {}
-                        }
-                      >
-                        <div
-                          key={index}
-                          className={styles.swatchButton}
-                          style={{
-                            backgroundColor: item.value,
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        key={index}
-                        className={styles.attributeButton}
-                        style={
-                          attribute.chosenAttribute === item.id
-                            ? {
-                                backgroundColor: "black",
-                                color: "white",
-                              }
-                            : {}
-                        }
-                      >
-                        {item.value}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              <AttributeItem key={index} {...attribute} />
             ))}
           </div>
-          <div
-            className={styles.counterButtonContainer}
-            style={
-              this.props.miniCart
-                ? {}
-                : {
-                    justifySelf: "right",
-                    width: "90%",
-                    display: "flex",
-                    alignItems: "flex-end",
-                    marginRight: "10px",
-                  }
-            }
-          >
-            <div
-              onClick={() => this.props.increaseAmountProduct(cartItem)}
-              className={styles.countButton}
-            >
-              +
-            </div>
-            <div style={{ width: "24px", textAlign: "center" }}>
-              {cartItem.amount ? cartItem.amount : 1}
-            </div>
-            <div
-              onClick={() =>
-                cartItem.amount && cartItem.amount > 1
-                  ? this.props.decreaseAmountProduct(cartItem)
-                  : this.props.removeProduct(cartItem)
-              }
-              className={styles.countButton}
-            >
-              -
-            </div>
-          </div>
+          <CounterButton cartItem={cartItem} miniCart={this.props.miniCart} />
           <div className={styles.imageContainer}>
             <img
               className={styles.cartItemImage}
               alt={cartItem.name}
               src={cartItem.gallery[this.state.showedPicture]}
             />
-            {this.props.miniCart ? null : (
+            {this.props.miniCart ? null : cartItem.gallery.length > 1 ? (
               <div className={styles.imageArrowsContainer}>
                 <div
                   onClick={() => this.setPreviousPicture()}
@@ -177,27 +98,21 @@ class CartItem extends Component<Props, State> {
                   <RightArrow />
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </>
     );
   }
 }
-function mapStateToProps(state: {
-  currency: { label: string; symbol: string };
-}) {
+function mapStateToProps(state: { currency: currency }) {
   const currency = state.currency;
   return {
     currency,
   };
 }
 
-const connector = connect(mapStateToProps, {
-  decreaseAmountProduct,
-  increaseAmountProduct,
-  removeProduct,
-});
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./Navbar.module.css";
 import getCategories from "../../utils/Queries/getCategories";
 import { ReactComponent as Logo } from "./logo.svg";
@@ -7,7 +7,7 @@ import { ReactComponent as UpArrow } from "./uparrow.svg";
 import { ReactComponent as Cart } from "./cartNavbar.svg";
 import { NavLink } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
-import { cartItem } from "../../../types";
+import { CartState } from "../../../types";
 import CartOverlay from "../CartOverlay/CartOverlay";
 import cartItemsAmount from "../../utils/cartItemsAmount";
 import getCurrencies from "../../utils/Queries/getCurrencies";
@@ -25,7 +25,7 @@ type State = {
   currencies: [] | { label: string; symbol: string }[];
 };
 
-class Navbar extends Component<Props, State> {
+class Navbar extends PureComponent<Props, State> {
   state = {
     categories: [],
     showCartOverlay: false,
@@ -81,9 +81,9 @@ class Navbar extends Component<Props, State> {
                 </NavLink>
               ))}
             </div>
-            <div>
+            <NavLink exact to={`/`}>
               <Logo />
-            </div>
+            </NavLink>
             <div className={styles.rightContainer}>
               <div className={styles.rightWrapper}>
                 <div
@@ -106,11 +106,11 @@ class Navbar extends Component<Props, State> {
                     {this.props.currency.symbol}
                   </div>
                   {this.state.showCurrenciesMenu ? (
-                    <div style={{ marginLeft: 8 }}>
+                    <div className={styles.marginLeft}>
                       <UpArrow />
                     </div>
                   ) : (
-                    <div style={{ marginLeft: 8 }}>
+                    <div className={styles.marginLeft}>
                       <DownArrow />
                     </div>
                   )}
@@ -154,10 +154,7 @@ class Navbar extends Component<Props, State> {
   }
 }
 
-function mapStateToProps(state: {
-  cart: cartItem[];
-  currency: { symbol: string; label: string };
-}) {
+function mapStateToProps(state: CartState) {
   const cart = state.cart;
   const currency = state.currency;
   return {

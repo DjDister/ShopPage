@@ -19,7 +19,6 @@ const getCurrencies = async (): Promise<
       (result: {
         data: { currencies: { label: string; symbol: string }[] };
         loading: boolean;
-        networkStatus: any;
       }) => {
         return result.data.currencies;
       }
