@@ -1,37 +1,43 @@
 export type ShoppingItem = {
-  id: any;
-  name: any;
-  brand: any;
-  inStock: any;
-  gallery: any[];
-  description: any;
+  id: string;
+  name: string;
+  brand: string;
+  inStock: boolean;
+  gallery: string[];
+  description: string;
   attributes: {
-    id: any;
+    id: string;
     name: string;
     type: string;
-    items: { displayValue: any; value: any; id: any }[];
+    items: { displayValue: string; value: string; id: string }[];
   }[];
   prices: {
-    amount: any;
-    currency: {
-      label: any;
-      symbol: any;
-    };
+    amount: number;
+    currency: currency;
   }[];
 };
 
+export type currency = {
+  label: string;
+  symbol: string;
+};
+
+export type state = {
+  cart: cartItem[];
+  currency: currency;
+};
 export interface cartItem extends ShoppingItem {
   attributes: {
-    id: any;
+    id: string;
     name: string;
     type: string;
-    items: { displayValue: any; value: any; id: any }[];
-    chosenAttribute: any;
+    items: { displayValue: string; value: string; id: string }[];
+    chosenAttribute: string;
   }[];
   amount?: number;
 }
 
 export type CartState = {
   cart: cartItem[];
-  currency: { label: string; symbol: string };
+  currency: currency;
 };

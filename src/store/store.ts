@@ -1,7 +1,7 @@
-import { createStore } from "redux";
 import * as actionTypes from "./actionTypes";
 import { CartState, cartItem } from "../../types";
 import { StateLoader } from "./manageSavingState";
+import { configureStore } from "@reduxjs/toolkit";
 import { areObjectsEqual } from "../utils/areObjectEqual";
 
 const initialState = {
@@ -60,47 +60,23 @@ function cartReducer(
           ),
         ],
       };
-    case actionTypes.DECREASE_AMOUNT_PRODUCT:
-      return {
-        ...state,
-        cart: [
-          ...state.cart.map((cartItem) => {
-            const recievedObjectInState =
-              isRecievedObjectThisStateObject(cartItem);
-            return recievedObjectInState
-              ? {
-                  ...recievedObjectInState,
-                  amount: recievedObjectInState.amount
-                    ? recievedObjectInState.amount - 1
-                    : 1,
-                }
-              : cartItem;
-          }),
-        ],
-      };
 
-    case actionTypes.INCREASE_AMOUNT_PRODUCT:
+    case actionTypes.CHANGE_AMOUNT_PRODUCT:
       return {
         ...state,
         cart: [
           ...state.cart.map((cartItem) => {
             const recievedObjectInState =
-              isRecievedObjectThisStateObject(cartItem);
+              JSON.stringify(action.payload.cartItem) ===
+              JSON.stringify(cartItem);
             return recievedObjectInState
               ? {
-                  ...recievedObjectInState,
-                  amount: recievedObjectInState.amount
-                    ? recievedObjectInState.amount + 1
-                    : 1,
+                  ...cartItem,
+                  amount: action.payload.newAmount,
                 }
               : cartItem;
           }),
         ],
-      };
-    //TODO if needed
-    case actionTypes.UPDATE_PRODUCT:
-      return {
-        ...state,
       };
     case actionTypes.SET_CURRENCY:
       return {
@@ -114,7 +90,10 @@ function cartReducer(
 
 const stateLoader = new StateLoader();
 const loadedState = stateLoader.loadState();
-const store = createStore(cartReducer, loadedState);
+const store = configureStore({
+  reducer: cartReducer,
+  preloadedState: loadedState,
+});
 
 store.subscribe(() => {
   stateLoader.saveState(store.getState());

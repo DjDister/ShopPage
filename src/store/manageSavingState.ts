@@ -3,7 +3,7 @@ import { CartState } from "../../types";
 export class StateLoader {
   loadState() {
     try {
-      let savedState = localStorage.getItem("http://localhost:3000:state");
+      const savedState = localStorage.getItem("state");
 
       if (savedState === null) return this.initializeState();
       return JSON.parse(savedState);
@@ -14,8 +14,8 @@ export class StateLoader {
 
   saveState(state: CartState) {
     try {
-      let savedState = JSON.stringify(state);
-      localStorage.setItem("http://localhost:3000:state", savedState);
+      const savedState = JSON.stringify(state);
+      localStorage.setItem("state", savedState);
     } catch (err) {
       console.log(err); // Log errors here, or ignore
     }

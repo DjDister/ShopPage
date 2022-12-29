@@ -1,14 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./CurrenciesMenu.module.css";
 import { connect, ConnectedProps } from "react-redux";
 import { cartItem } from "../../../types";
 
-import {
-  decreaseAmountProduct,
-  increaseAmountProduct,
-  removeProduct,
-  setCurrency,
-} from "../../store/actionCreators";
+import { removeProduct, setCurrency } from "../../store/actionCreators";
 import getCurrencies from "../../utils/Queries/getCurrencies";
 
 // eslint-disable-next-line no-use-before-define
@@ -20,7 +15,7 @@ type State = {
   currencies: [] | { label: string; symbol: string }[];
 };
 
-class CurrenciesMenu extends Component<Props, State> {
+class CurrenciesMenu extends PureComponent<Props, State> {
   state = {
     currencies: [{ label: "", symbol: "" }],
   };
@@ -71,8 +66,6 @@ function mapStateToProps(state: { cart: cartItem[] }) {
 }
 
 const connector = connect(mapStateToProps, {
-  decreaseAmountProduct,
-  increaseAmountProduct,
   removeProduct,
   setCurrency,
 });

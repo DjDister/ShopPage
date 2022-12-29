@@ -1,19 +1,19 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import { RouteComponentProps } from "react-router-dom";
-import "./App.css";
-
 import getProductsForCategory from "./utils/Queries/getProductsForCategory";
 import Card from "./components/Card/Card";
-import { ShoppingItem } from "../types";
-interface CategoryPageProps extends RouteComponentProps<{ category: string }> {}
+import { cartItem, ShoppingItem } from "../types";
+interface CategoryPageProps extends RouteComponentProps<{ category: string }> {
+  category?: string;
+}
 
 type CategoryPageState = {
   shopingItems: ShoppingItem[];
-  cart: any;
+  cart: cartItem[];
 };
 
-class CategoryPage extends Component<CategoryPageProps, CategoryPageState> {
+class CategoryPage extends PureComponent<CategoryPageProps, CategoryPageState> {
   state = {
     shopingItems: [],
     cart: [],

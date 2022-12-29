@@ -1,14 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./CartOverlay.module.css";
 import { connect, ConnectedProps } from "react-redux";
-import { cartItem } from "../../../types";
+import { CartState } from "../../../types";
 import cartItemsAmount from "../../utils/cartItemsAmount";
 import totalCartPrice from "../../utils/totalCartPrice";
-import {
-  decreaseAmountProduct,
-  increaseAmountProduct,
-  removeProduct,
-} from "../../store/actionCreators";
+import { removeProduct } from "../../store/actionCreators";
 import { NavLink } from "react-router-dom";
 import CartItem from "../CartItem/CartItem";
 
@@ -19,7 +15,7 @@ interface Props extends PropsFromRedux {
 
 type State = {};
 
-class CartOverlay extends Component<Props, State> {
+class CartOverlay extends PureComponent<Props, State> {
   async componentDidMount() {}
 
   render() {
@@ -77,10 +73,7 @@ class CartOverlay extends Component<Props, State> {
   }
 }
 
-function mapStateToProps(state: {
-  cart: cartItem[];
-  currency: { label: string; symbol: string };
-}) {
+function mapStateToProps(state: CartState) {
   const cart = state.cart;
   const currency = state.currency;
   return {
@@ -89,8 +82,6 @@ function mapStateToProps(state: {
   };
 }
 const connector = connect(mapStateToProps, {
-  decreaseAmountProduct,
-  increaseAmountProduct,
   removeProduct,
 });
 

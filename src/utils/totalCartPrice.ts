@@ -1,9 +1,6 @@
-import { cartItem } from "../../types";
+import { cartItem, currency } from "../../types";
 
-const totalCartPrice = (
-  cart: cartItem[],
-  currency: { label: string; symbol: string }
-) => {
+const totalCartPrice = (cart: cartItem[], currency: currency) => {
   const amount = cart.reduce((previousValue, currentValue) => {
     const priceByCurrentCurrency = currentValue.prices.find(
       (price) => price.currency.label === currency.label

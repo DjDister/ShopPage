@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import Navbar from "./components/Navbar/Navbar";
 import { RouteComponentProps } from "react-router-dom";
@@ -6,7 +6,7 @@ import "./ProductPage.css";
 
 import getProductById from "./utils/Queries/getProductById";
 import parse from "html-react-parser";
-import { cartItem } from "../types";
+import { cartItem, currency } from "../types";
 import { connect, ConnectedProps } from "react-redux";
 import { addProduct } from "./store/actionCreators";
 
@@ -21,13 +21,13 @@ type ProductPageState = {
   chosenPicture: number;
 };
 
-class ProductPage extends Component<ProductPageProps, ProductPageState> {
+class ProductPage extends PureComponent<ProductPageProps, ProductPageState> {
   state = {
     product: {
       id: "",
       name: "",
       brand: "",
-      inStock: "",
+      inStock: true,
       description: "",
       gallery: [],
       attributes: [
@@ -41,7 +41,7 @@ class ProductPage extends Component<ProductPageProps, ProductPageState> {
       ],
       prices: [
         {
-          amount: "",
+          amount: 0,
           currency: {
             label: "",
             symbol: "",
@@ -214,9 +214,7 @@ class ProductPage extends Component<ProductPageProps, ProductPageState> {
   }
 }
 
-function mapStateToProps(state: {
-  currency: { label: string; symbol: string };
-}) {
+function mapStateToProps(state: { currency: currency }) {
   const currency = state.currency;
   return {
     currency,

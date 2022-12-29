@@ -1,68 +1,38 @@
-import React, { Component } from "react";
-import { connect, ConnectedProps } from "react-redux";
-import getProducts from "./utils/Queries/getProducts";
-import Navbar from "./components/Navbar/Navbar";
-import "./App.css";
-import Card from "./components/Card/Card";
-import { ShoppingItem } from "../types";
-import { cartItem } from "../types";
-
-// eslint-disable-next-line no-use-before-define
-interface Props extends PropsFromRedux {}
-
-type State = {
-  shopingItems: ShoppingItem[];
-  cart: any;
-};
-
-class App extends Component<Props, State> {
-  state = {
-    shopingItems: [],
-    cart: [],
-  };
-
-  async componentDidMount() {
-    const fetchedProducts = await getProducts();
-    if (fetchedProducts) {
-      this.setState((previousState) => ({
-        shopingItems: fetchedProducts,
-        cart: previousState.cart,
-      }));
-    }
-  }
-
+import React, { PureComponent } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import CategoryPage from "./CategoryPage";
+import ProductPage from "./ProductPage";
+import CartPage from "./CartPage";
+import AllCategories from "./AllCategories";
+class App extends PureComponent {
   render() {
     return (
-      <div className="container">
-        <Navbar />
-        <div className="flexCenter">
-          <div className="pageContainer">
-            <div className="categoryName">ALL</div>
-            <div className="gridCardContainer">
-              {this.state.shopingItems.map((item: ShoppingItem, index) => (
-                <Card item={item} key={index} />
-              ))}
-            </div>
-          </div>
-          <div className="footer"></div>
-        </div>
-      </div>
+      <Router>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => <AllCategories {...props} />}
+          />
+          <Route
+            exact
+            path="/category/:category"
+            render={(props) => <CategoryPage {...props} />}
+          />
+          <Route
+            exact
+            path="/product/:product"
+            render={(props) => <ProductPage {...props} />}
+          />
+          <Route
+            exact
+            path="/cart"
+            render={(props) => <CartPage {...props} />}
+          />
+        </Switch>
+      </Router>
     );
   }
 }
 
-function mapStateToProps(state: {
-  cart: cartItem[];
-  currency: { label: string; symbol: string };
-}) {
-  const cart = state.cart;
-
-  return {
-    cart,
-  };
-}
-const connector = connect(mapStateToProps);
-
-export default connector(App);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
+export default App;

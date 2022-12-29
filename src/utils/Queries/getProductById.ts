@@ -37,14 +37,8 @@ const getProductById = async (productId: string): Promise<ShoppingItem> => {
       `,
       variables: { productId },
     })
-    .then(
-      (result: {
-        data: { product: ShoppingItem };
-        loading: boolean;
-        networkStatus: any;
-      }) => {
-        return result.data.product;
-      }
-    );
+    .then((result: { data: { product: ShoppingItem }; loading: boolean }) => {
+      return result.data.product;
+    });
 };
 export default getProductById;

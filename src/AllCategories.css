@@ -10,6 +10,7 @@
 }
 .pageContainer{
     width: 90%;
+    max-width: 1440px;
 }
 
 .categoryName{
@@ -30,7 +31,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     row-gap: 50px;
-    column-gap: 40px;
+    column-gap: calc((1440px - (386px*3))/2);
     position: relative;
 
 }
@@ -41,3 +42,7 @@
     width: 100%;
 }
 
+.pageContainerCart{
+    width: 90%;
+    max-width: 1440px;
+}
